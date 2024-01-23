@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:force_update_example/src/features/updates/data/updates_repository.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -48,6 +50,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Consumer(builder: (context, ref, child) {
+              final AsyncValue<int> currentBuild =
+                  ref.watch(deviceBuildProvider);
+              return currentBuild.when(
+                data: (value) {
+                  return Text("Current build: $value");
+                },
+                loading: () {
+                  return const CircularProgressIndicator();
+                },
+                error: (e, st) {
+                  return Text("there was an error: $e");
+                },
+              );
+            }),
             const Text(
               'You have pushed the button this many times:',
             ),
