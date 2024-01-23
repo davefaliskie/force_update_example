@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:force_update_example/src/features/updates/data/updates_repository.dart';
+import 'package:force_update_example/src/features/updates/presentation/optional_update_card.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -50,6 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const OptionalUpdateCard(),
+            const Spacer(),
             Consumer(builder: (context, ref, child) {
               final AsyncValue<int> currentBuild =
                   ref.watch(deviceBuildProvider);
@@ -72,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const Spacer(),
           ],
         ),
       ),
