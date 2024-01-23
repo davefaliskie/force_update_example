@@ -1,24 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:force_update_example/src/features/updates/data/updates_repository.dart';
+import 'package:force_update_example/src/features/updates/domain/update_status.dart';
+import 'package:force_update_example/src/features/updates/presentation/mandatory_update_screen.dart';
 import 'package:force_update_example/src/features/updates/presentation/optional_update_card.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final updateStatusValue = ref.watch(deviceUpdateStatusProvider);
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: updateStatusValue.when(
+        loading: () => const CircularProgressIndicator.adaptive(),
+        error: (e, s) => const Center(
+          child: Text("There was a problem loading the app, please try again"),
+        ),
+        data: (updateStatus) {
+          if (updateStatus == UpdateStatus.mandatory) {
+            return const MandatoryUpdateScreen();
+          }
+          return const MyHomePage(title: 'Flutter Demo Home Page');
+        },
+      ),
     );
   }
 }
