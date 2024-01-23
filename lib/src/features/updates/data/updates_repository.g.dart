@@ -35,5 +35,21 @@ final deviceBuildProvider = FutureProvider<int>.internal(
 );
 
 typedef DeviceBuildRef = FutureProviderRef<int>;
+String _$deviceUpdateStatusHash() =>
+    r'aca9d92d9355069a8552120de9ed89973cdbfc1a';
+
+/// See also [deviceUpdateStatus].
+@ProviderFor(deviceUpdateStatus)
+final deviceUpdateStatusProvider = FutureProvider<UpdateStatus>.internal(
+  deviceUpdateStatus,
+  name: r'deviceUpdateStatusProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$deviceUpdateStatusHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef DeviceUpdateStatusRef = FutureProviderRef<UpdateStatus>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
